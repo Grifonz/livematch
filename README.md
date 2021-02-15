@@ -55,7 +55,7 @@ For each single match, the Event component passes-down specific match details to
 |  matchInfo        |   Array   |   list of specific matches selected by option           |
 
 
-## events
+## Progressbar
 The ProgressBar is a component which shows a progress bar circle containing the Match timing.
 
 |       Props       |   Type    |   Description    |
