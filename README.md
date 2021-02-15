@@ -2,10 +2,10 @@
 
 Livematch is a sports-event carousel component. The component is designed in react by using react-bootstrap for the styling.
 The livematch component includes:
-  1) a Dropdown, which contain a list of Game Timing. The dropdown pass-down the item selected by user to the event-carousel
-  2) a Carousel of sport events, which contains: Country name, Competition name, Game lable, Game score, Time of the match and the competitors.
+  1) a Dropdown, which contains a list of Game Timing. The dropdown pass-down the items selected by user to the event-carousel
+  2) a Carousel of sport events, which contain: Country name, Competition name, Game lable, Game score, Time of the match and the competitors.
       The Carousel receive a prop from the dropdown item selected and shows the match accordently
-  3) a Progressbar circle, which indicate the current timing of each match
+  3) a Progressbar circle, which indicates the current timing of each match
 
 ## Project setup
 ```
@@ -26,6 +26,37 @@ localhost:3000
 ```
 npm build
 ```
+
+### Description
+
+## content
+The Content component allows to select different options such as: All Matches, Result Matches, Live Matches, Upcoming Mathces and Cancelled from the Dropdown and 
+it passes-down the selected one to the child component. 
+The Content component is also responsive.
+
+|       State       |   Type    |                       Description                       |
+|-------------------|-----------|---------------------------------------------------------|
+|  sportsData       |   Array   |   fetch sports data                                     |
+|  options          |   Array   |   match selection types                                 |
+|  matchesByOption  |   Object  |   All matches grouped by option                         |
+|  matchDetails     |   Array   |   list of specific matches selected by option           |
+|  itemSelected     |   String  |   option selected from dropdown                         |
+|  mobile           |   Bool    |   check if mobile (screen size < 768 px)                |
+|  isOpen           |   Bool    |   check if sidebar is open                              |
+
+
+## events
+The Event component is a react-bootstrap carousel which receives a list of match details (according to the optpion selected by user) and it shows them as slides.
+The Event component also formats the timestamp into date by using moment as library.
+For each single match, the Event component passes-down specific match details to the Progressbar child component.
+
+|       Props       |   Type    |                       Description                       |
+|-------------------|-----------|---------------------------------------------------------|
+|  matchInfo        |   Array   |   list of specific matches selected by option           |
+
+
+## events
+
 
 ## Main Components:
 
@@ -57,26 +88,6 @@ class App extends Component{
 }
 export default App;
 
-
-```
-
-### index.js
-```js
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.module.scss';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals(console.log('performance...'));
 
 ```
 
