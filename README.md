@@ -56,10 +56,14 @@ For each single match, the Event component passes-down specific match details to
 
 
 ## events
+The ProgressBar is a component which shows a progress bar circle containing the Match timing.
+
+|       Props       |   Type    |   Description    |
+|-------------------|-----------|------------------|
+|  details          |   Object  |   match details  |
 
 
 ## Main Components:
-
 ### App.js
 ```js
 //import logo from './logo.svg';
@@ -87,13 +91,10 @@ class App extends Component{
   }
 }
 export default App;
-
-
 ```
 
 ### content/index.jsx
 ```js
-/* eslint-plugin-disable react */
 import React, { Component } from 'react';
 import { Col, Dropdown } from 'react-bootstrap';
 import Matches from './../events/index';
@@ -380,7 +381,7 @@ MatchCarousel.propTypes = {
 export default MatchCarousel;
 ```
 
-### progressbat/index.jsx
+### progressbar/index.jsx
 ```js
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
