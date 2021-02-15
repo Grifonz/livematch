@@ -46,7 +46,7 @@ The Content component is also responsive.
 
 
 ## events
-The Event component is a react-bootstrap carousel which receives a list of match details (according to the optpion selected by user) and it shows them as slides.
+The Event component is a react-bootstrap carousel which receives a list of match details (according to the option selected by user) and it shows them as slides.
 The Event component also formats the timestamp into date by using moment as library.
 For each single match, the Event component passes-down specific match details to the Progressbar child component.
 
