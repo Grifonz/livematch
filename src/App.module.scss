@@ -1,7 +1,24 @@
-.App {
-  text-align: center;
+@import "~bootstrap/scss/bootstrap";
+
+//fixing main container
+:global{
+  .container-fluid{
+    margin: 0;
+    padding: 0;
+    @media screen and (min-width: 1200px) {
+      max-width: none;
+    }
+  }
 }
 
+html, body{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Barlow', sans-serif;
+}
+
+/*
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -35,4 +52,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+}*/

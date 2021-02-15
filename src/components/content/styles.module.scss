@@ -1,0 +1,111 @@
+//disable react-bootstrap css globally
+:global{
+
+    .col{
+        padding: 0 !important;
+    }
+
+    #dropdown-option.dropdown-toggle.btn.btn-primary{
+        background-color: rgb(67, 196, 89) !important;
+        border: none !important;
+    }
+
+    #dropdown-option.dropdown-toggle.btn.btn-primary:active:focus{
+        opacity: 0.8 !important;
+    }
+
+    #action-list.dropdown-item.active, #action-list.dropdown-item:active{
+        background-color: rgb(61, 61, 61) !important;
+        opacity: 0.1 !important;
+    }
+
+    //setting library sidebar
+    .bm-burger-button {
+        position: fixed;
+        width: 36px;
+        height: 30px;
+        right: 36px;
+        top: 24px;
+    }
+    .bm-burger-bars {
+        background: #373a47;
+    }
+    .bm-item:focus {
+        outline: none;
+    }
+}
+
+.headerBox{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(84, 123, 150);
+    color: lightgray;
+    .title{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center; 
+        h1{
+            padding: 12px 0 15px 15px;
+            text-align: center;
+            margin-bottom: 0;
+        }
+    }
+    .headerList{
+        background-color: rgb(67, 196, 89);
+        font-family: 'Barlow', sans-serif;
+        text-align: center;
+        height: 75px;
+        font-size: 26px;
+        display: flex;
+        color: white;
+    }
+    .bodyList{
+        background-color: lightgray;
+        .item{
+            height: 60px;
+            border-bottom: 1px solid rgb(175, 173, 173);
+            color: black;
+            display: flex;
+            font-size: 20px;
+            .counter{
+                width: 50px;
+                text-align: center;
+                background-color: rgb(61, 61, 61);
+                border-radius: 50%;
+                color: white;
+                margin: auto 15px auto auto;
+            }
+            .action{
+                margin: auto auto auto 20px;
+            }
+        }
+    }
+    .hamburger{
+        width: 30px;
+        height: 4px;
+        background-color: lightgray;
+        border-radius: 5px;
+        margin: 6px 0;
+    }
+    .selector{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding-right: 15px;
+        .list{
+            display: flex;
+            justify-content: space-between;
+            .counter{
+                width: 30%;
+                text-align: center;
+                background-color: rgb(61, 61, 61);
+                border-radius: 50%;
+                color: white;
+            }
+            .action{
+                width: 70%;
+            }
+        }
+    }
+}
