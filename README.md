@@ -30,17 +30,33 @@ npm build
 ### Description
 
 ## content
-
+The Content component allows to select different options such as: All Matches, Result Matches, Live Matches, Upcoming Mathces and Cancelled from the Dropdown and 
+it passes-down the selected one to the child component. 
+The Content component is also responsive.
 
 |       State       |   Type    |                       Description                       |
 |-------------------|-----------|---------------------------------------------------------|
 |  sportsData       |   Array   |   fetch sports data                                     |
 |  options          |   Array   |   match selection types                                 |
 |  matchesByOption  |   Object  |   All matches grouped by option                         |
-|  matchDetails     |   Array   |   list of a specific matches selected by option         |
+|  matchDetails     |   Array   |   list of specific matches selected by option           |
 |  itemSelected     |   String  |   option selected from dropdown                         |
 |  mobile           |   Bool    |   check if mobile (screen size < 768 px)                |
 |  isOpen           |   Bool    |   check if sidebar is open                              |
+
+
+## events
+The Event component is a react-bootstrap carousel which receives a list of match details (according to the optpion selected by user) and it shows them as slides.
+The Event component also formats the timestamp into date by using moment as library.
+For each single match, the Event component passes-down specific match details to the Progressbar child component.
+
+|       Props       |   Type    |                       Description                       |
+|-------------------|-----------|---------------------------------------------------------|
+|  matchInfo        |   Array   |   list of specific matches selected by option           |
+
+
+## events
+
 
 ## Main Components:
 
