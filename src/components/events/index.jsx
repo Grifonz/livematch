@@ -1,11 +1,10 @@
 /* eslint-plugin-disable react */
 import React from 'react';
-import { Button, Carousel, Card } from 'react-bootstrap';
+import { Carousel, Card } from 'react-bootstrap';
 import moment from 'moment';
 import ProgressBar from '../progressbar/index';
 import PropTypes from 'prop-types';
 import stylesIn from './styles.module.scss';
-import { getByDisplayValue } from '@testing-library/react';
 
 const MatchCarousel = ({
     matchInfo

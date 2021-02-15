@@ -44,6 +44,9 @@
                     @media screen and (max-width: 1200px) {
                         font-size: 24px;
                     }
+                    @media screen and (max-width: 400px) {
+                        font-size: 20px;
+                    }
                 }
 
             }
@@ -71,6 +74,9 @@
                 @media screen and (max-width: 1200px) {
                     font-size: 56px;
                 }
+                @media screen and (max-width: 400px) {
+                    font-size: 54px;
+                }
             }
             .matchDetails{
                 height: 25%;
@@ -89,6 +95,9 @@
                     @media screen and (max-width: 1200px) {
                         font-size: 20px;
                     }
+                    @media screen and (max-width: 400px) {
+                        font-size: 16px;
+                    }
                 }
                 .awayTeam{
                     margin:auto;
@@ -102,6 +111,9 @@
                     }
                     @media screen and (max-width: 830px) {
                         font-size: 20px;
+                    }
+                    @media screen and (max-width: 400px) {
+                        font-size: 16px;
                     }
                 }
             }
