@@ -1,70 +1,439 @@
-# Getting Started with Create React App
+# Livematch
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Livematch is a sports-event carousel component. The component is designed in react by using react-bootstrap for the styling.
+The livematch component includes:
+  1) a Dropdown, which contain a list of Game Timing. The dropdown pass-down the item selected by user to the event-carousel
+  2) a Carousel of sport events, which contains: Country name, Competition name, Game lable, Game score, Time of the match and the competitors.
+      The Carousel receive a prop from the dropdown item selected and shows the match accordently
+  3) a Progressbar circle, which indicate the current timing of each match
 
-## Available Scripts
+## Project setup
+```
+npm install
+```
 
-In the project directory, you can run:
+### Compiles and hot-reloads for development
+```
+npm start
+```
 
-### `npm start`
+### Run on browser
+```
+localhost:3000
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Compiles and minifies for production
+```
+npm build
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Main Components:
 
-### `npm test`
+### App.js
+```js
+//import logo from './logo.svg';
+import React, { Component } from 'react';
+import Content from '../src/components/content';
+import { Container } from 'react-bootstrap';
+import './App.module.scss';
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+class App extends Component{
+  constructor(){
+    super()
+    this.inputRef = React.createRef();
+  }
 
-### `npm run build`
+  componentDidMount(){
+    this.inputRef.current.focus();
+  }
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  render(){
+    return(
+      <Container fluid ref={this.inputRef} id="main">
+        <Content />
+      </Container>
+    )
+  }
+}
+export default App;
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
 
-### `npm run eject`
+### index.js
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.module.scss';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals(console.log('performance...'));
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### content/index.jsx
+```js
+/* eslint-plugin-disable react */
+import React, { Component } from 'react';
+import { Col, Dropdown } from 'react-bootstrap';
+import Matches from './../events/index';
+import { slide as Sidebar } from 'react-burger-menu';
+import stylesIn from './styles.module.scss';
 
-## Learn More
+class Content extends Component{
+    constructor(props){
+        super(props)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+        this.state = {
+            sportsData: [], // Entire json file downloaded
+            options: [], // Options list in Dropdown selector
+            matchesByOption:{}, // All matches devided by option
+            matchDetails:[],
+            itemSelected:'', // Match details according to the option selected by user
+            mobile: false,
+            isOpen: false
+        }
+    }
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    componentDidMount(){
+        let init = this.state;
+        init.options = ["ALL","Result","Live","Upcoming","Cancelled"];
+        init.matchesByOption = {
+            "ALL": [],
+            "Result": [],
+            "Live": [],
+            "Upcoming": [],
+            "Cancelled": []
+        }
+        init.sportsData = require("../../api/master_data_sports.json");
+        init.isOpen = false;
+        this.setState(init);
 
-### Code Splitting
+        this.initializeCountersAndLabels(); // initialized counters by options and lables as props
+        this.setMobile(); // check mobile screen size
+        console.log('render comp is open: ', this.state.isOpen);
+    }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+    //manage lables/key here
+    initializeCountersAndLabels = () => {
+        let updateState = this.state;
+        let option = '';
+        let lable ='';
+        Object.values(updateState.sportsData).map(time => {
+            switch(time.status.type.toLowerCase()){
+                case 'finished': 
+                    option='Result'; // Dropdown Option
+                    lable = 'ended'; // Label Match
+                    break; 
+                case 'inprogress': 
+                    option='Live'; // Dropdown Option
+                    lable = 'live'; // Label Match
+                    break;
+                case 'notstarted': 
+                    option='Upcoming'; // Dropdown Option
+                    lable = 'timestamp'; // Label Match
+                    break;
+                case 'canceled' || 'cancelled': 
+                    option='Cancelled'; // Dropdown Option
+                    lable = 'cancelled'; // Label Match
+                    break;
+                    default: 
+                        option='default';
+                        break;
+            }
 
-### Analyzing the Bundle Size
+            // Added new property to properties sending to children comp
+            time['lable'] = lable;
+            updateState.matchesByOption[option].push(time);
+            return 0;
+        })
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+        //first run - do not remove -
+        updateState.matchesByOption[Object.keys(updateState.matchesByOption)[0]] = this.state.sportsData;
+        
+        //first run - do not remove -
+        updateState.matchDetails = updateState.matchesByOption[Object.keys(updateState.matchesByOption)[0]];
 
-### Making a Progressive Web App
+        this.setState(updateState);
+    }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+    //check the mobile screen
+    setMobile = () => {
+        let mobileWidth = document.getElementById('main').clientWidth;
+        let isMobile = false;
+        if(mobileWidth < 768){ //breakpoint mobile
+            isMobile = true;
+        }
+        let updateState = this.state;
+        updateState.mobile = isMobile;
+        this.setState(updateState);
+    }
 
-### Advanced Configuration
+    //handle action dropdown
+    handleAction = event => {
+        let updateState = this.state;
+        updateState.matchDetails = updateState.matchesByOption[event];
+        this.setState(updateState);
+    }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+    //open and close sidebar
+    handleStateChange = () => {
+        let updateState  = this.state;
+        updateState.isOpen = !this.state.isOpen;
+        this.setState(updateState);
+      }
 
-### Deployment
+    //handle action sidebar menu
+    handleItem = value => {
+        let updateState = this.state;
+        updateState.itemSelected = value;
+        updateState.isOpen = !this.state.isOpen;
+        updateState.matchDetails = updateState.matchesByOption[value];
+        this.setState(updateState);
+    }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+    render(){
+        const { options, matchDetails, matchesByOption, mobile, isOpen } = this.state;
+        return(
+            <Col>
+                <Col className={stylesIn.headerBox}>
+                    <div className={stylesIn.title} >
+                        <h1>Sport Events</h1>
+                    </div>
+                    {mobile ? (
+                        <Sidebar
+                            right
+                            noOverlay 
+                            isOpen={isOpen}
+                            onOpen={state => this.handleStateChange(state)} 
+                            >
+                                <div className={stylesIn.headerList}>
+                                    <div style={{ margin: 'auto' }}>
+                                        Select Time
+                                    </div>
+                                </div>
+                                <div className={stylesIn.bodyList}>
+                                   {options.map((action, index) => (
+                                       <div 
+                                        className={stylesIn.item}
+                                        key={index}
+                                        onClick = {() => this.handleItem(action)}>
+                                            <div 
+                                                className={stylesIn.action}>{action}
+                                            </div>
+                                            <div 
+                                                className={stylesIn.counter}>{matchesByOption[action].length}
+                                            </div>
+                                        </div>
+                                   ))}
+                                </div>
+                        </Sidebar>
+                    ) : (
+                        <div className={stylesIn.selector} >
+                            <Dropdown>
+                                <Dropdown.Toggle 
+                                    id="dropdown-option"
+                                    style={{ boxShadow: 'none', width: '200px' }} >
+                                    Select Time
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    {options.map((action, index) => (
+                                        <Dropdown.Item  
+                                            key={index}
+                                            eventKey={action}
+                                            onSelect = {this.handleAction}
+                                            style={{ width: '200px' }}
+                                            id="action-list"
+                                            >
+                                                <div className={stylesIn.list}>
+                                                    <div 
+                                                        className={stylesIn.action}>
+                                                            {action}
+                                                    </div>
+                                                    <div 
+                                                        className={stylesIn.counter}>
+                                                            {matchesByOption[action].length}
+                                                    </div>
+                                                </div>
+                                            </Dropdown.Item>
+                                    ))}
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </div>
+                    )}
+                </Col>
+                <Col>
+                    <Matches matchInfo={matchDetails} />
+                </Col>
+            </Col>
+        )
+    }
+}
 
-### `npm run build` fails to minify
+export default Content;
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### events/index.jsx
+```js
+/* eslint-plugin-disable react */
+import React from 'react';
+import { Button, Carousel, Card } from 'react-bootstrap';
+import moment from 'moment';
+import ProgressBar from '../progressbar/index';
+import PropTypes from 'prop-types';
+import stylesIn from './styles.module.scss';
+import { getByDisplayValue } from '@testing-library/react';
+
+const MatchCarousel = ({
+    matchInfo
+}) => {
+
+    //convert timestamp to date using moment as format
+    const dateFormat = timestamp => {
+        const milliseconds = timestamp * 1000;
+        const dateObject = new Date(milliseconds);
+        let newdate = dateObject.toLocaleString();
+        return moment(newdate).format('MMMM Do, hh:mm A').toUpperCase();
+    }
+
+        return(
+            <div
+                className={stylesIn.eventsBox}>
+                <Carousel 
+                    indicators={false}
+                    interval={10000}
+                    className={stylesIn.eventCarousel}
+                    style={{ margin: 'auto'}} 
+                    id="carouselMatch">
+                    {matchInfo.length > 0 && matchInfo.map(match => (
+                        <Carousel.Item key={match.id}>
+                            <Card
+                                className={stylesIn.matchBox}
+                                id="cardmatch">
+                                <Card.Body>
+                                    <Card.Title className={stylesIn.matchTitle}>
+                                        <div className={stylesIn.country}>{match.country.toUpperCase()}</div>
+                                        <div className={stylesIn.league}>{match.competition}</div>
+                                    </Card.Title>
+                                    <div className={stylesIn.matchLables}>
+                                        {match.lable === 'timestamp' ? (
+                                            <div className={stylesIn[`lable-${match.lable}`]}>{dateFormat(match.timestamp)}</div>
+                                        ):(
+                                            <div className={stylesIn[`lable-${match.lable}`]}>{match.lable.toUpperCase()}</div>
+                                        )}
+                                    </div>
+                                    <div className={stylesIn.matchScores}>
+                                        {match.lable !== 'timestamp' ? (
+                                            <div className={stylesIn.score}>
+                                                <div className={stylesIn.homeScore}>{match.homeScore.current}</div>
+                                                <div className={stylesIn.separator}> - </div>
+                                                <div className={stylesIn.awayScore}>{match.awayScore.current}</div>
+                                            </div>
+                                        ) : (
+                                            <div className={stylesIn.score}>
+                                                <div className={stylesIn.homeScore}>{match.lable !== 'cancelled' ? 0 : ''}</div>
+                                                <div className={stylesIn.separator}> - </div>
+                                                <div className={stylesIn.awayScore}>{match.lable !== 'cancelled' ? 0 : ''}</div>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className={stylesIn.matchDetails}>
+                                            <div className={stylesIn.homeTeam}>{match.homeTeam.name}</div>
+                                            <ProgressBar 
+                                                details={match}
+                                                style={{ width: '25%' }}/>
+                                            <div className={stylesIn.awayTeam}>{match.awayTeam.name}</div>
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        </Carousel.Item>
+                    ))}
+                </Carousel>
+            </div>
+        )
+    }
+
+MatchCarousel.propTypes = {
+    matchInfo: PropTypes.any
+}
+
+export default MatchCarousel;
+```
+
+### progressbat/index.jsx
+```js
+import React, {useState, useEffect} from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import stylesIn from './styles.module.scss';
+
+const ProgressbarCircle = ({
+    details
+}) => {
+
+    const setCss = () => {
+        let liveStatus = details.liveStatus;
+        if(details.liveStatus.slice(-1) === '+'){
+            liveStatus = details.liveStatus.replace(/.$/,"p");
+        }
+        return liveStatus.toLowerCase();
+    }
+
+    return(
+        <div className={classnames(stylesIn.setSize, stylesIn.chartsContainer)}>
+            <div className={classnames(stylesIn.pieWrapper, stylesIn[`progress-${setCss()}`], stylesIn.style2)}>
+                <span className={stylesIn.label}>
+                    {details.lable && details.lable === 'live' ? (
+                        <div className={stylesIn.time}>
+                            {details.liveStatus}
+                            {details.liveStatus !== 'HT' && details.liveStatus !== '45+' && details.liveStatus !== '90+' ? (
+                                <span>'</span>
+                            ):null}
+                        </div>
+                    ) : (
+                        <>
+                            {details.lable === 'ended' ? (
+                                <div className={stylesIn.time}>
+                                    {details.liveStatus}
+                                </div>
+                            ):null}
+                        </>
+                    )}
+                </span>
+
+                <div className={stylesIn.pie}>
+                    <div className={classnames(stylesIn.leftSide, stylesIn.halfCircle)}></div>
+                    <div className={classnames(stylesIn.rightSide, stylesIn.halfCircle)}></div>
+                </div>
+                <div className={stylesIn.shadow}></div>
+            </div>
+        </div>
+    )
+}
+
+ProgressbarCircle.propTypes = {
+    details: PropTypes.any
+}
+
+export default ProgressbarCircle;
+```
+
+## Libraries
+    "bootstrap": "^4.6.0",
+    "moment": "^2.29.1",
+    "node-sass": "^4.14.1",
+    "react": "^17.0.1",
+    "react-bootstrap": "^1.4.3",
+    "react-burger-menu": "^3.0.3",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.2"
+    
