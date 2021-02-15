@@ -2,10 +2,10 @@
 
 Livematch is a sports-event carousel component. The component is designed in react by using react-bootstrap for the styling.
 The livematch component includes:
-  1) a Dropdown, which contain a list of Game Timing. The dropdown pass-down the items selected by user to the event-carousel
-  2) a Carousel of sport events, which contains: Country name, Competition name, Game lable, Game score, Time of the match and the competitors.
+  1) a Dropdown, which contains a list of Game Timing. The dropdown pass-down the items selected by user to the event-carousel
+  2) a Carousel of sport events, which contain: Country name, Competition name, Game lable, Game score, Time of the match and the competitors.
       The Carousel receive a prop from the dropdown item selected and shows the match accordently
-  3) a Progressbar circle, which indicate the current timing of each match
+  3) a Progressbar circle, which indicates the current timing of each match
 
 ## Project setup
 ```
@@ -32,15 +32,15 @@ npm build
 ## content
 
 
-|       Props       |   Type    |   Description   |
-|-------------------|-----------|-----------------|
-|  sportsData       |   Array   |                 |
-|  options          |   Array   |                 |
-|  matchesByOption  |   Object  |                 |
-|  matchDetails     |   Array   |                 |
-|  itemSelected     |   String  |                 |
-|  mobile           |   Bool    |                 |
-|  isOpen           |   Bool    |                 |
+|       State       |   Type    |                       Description                       |
+|-------------------|-----------|---------------------------------------------------------|
+|  sportsData       |   Array   |   fetch sports data                                     |
+|  options          |   Array   |   match selection types                                 |
+|  matchesByOption  |   Object  |   All matches grouped by option                         |
+|  matchDetails     |   Array   |   list of a specific matches selected by option         |
+|  itemSelected     |   String  |   option selected from dropdown                         |
+|  mobile           |   Bool    |   check if mobile (screen size < 768 px)                |
+|  isOpen           |   Bool    |   check if sidebar is open                              |
 
 ## Main Components:
 
