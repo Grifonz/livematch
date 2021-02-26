@@ -3,7 +3,7 @@
 Livematch is a sports-event carousel component. The component is designed in react by using react-bootstrap for the styling.
 The livematch component includes:
   1) a Dropdown, which contains a list of Game Timing. The dropdown pass-down the items selected by user to the event-carousel
-  2) a Carousel of sport events, which contain: Country name, Competition name, Game lable, Game score, Time of the match and the competitors.
+  2) a Carousel of sport events, which contains: Country name, Competition name, Game lable, Game score, Time of the match and the competitors.
       The Carousel receive a prop from the dropdown item selected and shows the match accordently
   3) a Progressbar circle, which indicates the current timing of each match
 
