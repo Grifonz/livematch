@@ -3,8 +3,8 @@
 Livematch is a sports-event carousel component. The component is designed in react by using react-bootstrap for the styling.
 The livematch component includes:
   1) a Dropdown, which contains a list of Game Timing. The dropdown pass-down the items selected by user to the event-carousel
-  2) a Carousel of sport events, which contain: Country name, Competition name, Game lable, Game score, Time of the match and the competitors.
-      The Carousel receive a prop from the dropdown item selected and shows the match accordently
+  2) a Carousel of sport events, which contains: Country name, Competition name, Game lable, Game score, Time of the match and the competitors.
+      The Carousel receives a prop (game timing selected into the dropdown) and it shows the match accordently
   3) a Progressbar circle, which indicates the current timing of each match
 
 ## Project setup
@@ -46,8 +46,8 @@ The Content component is also responsive.
 
 
 ## events
-The Event component is a react-bootstrap carousel which receives a list of match details (according to the optpion selected by user) and it shows them as slides.
-The Event component also formats the timestamp into date by using moment as library.
+The Event component is a react-bootstrap carousel which receives a list of match details (according to the option selected by user) and it shows them as slides.
+The Event component also formats the timestamp into date by using Moment as library.
 For each single match, the Event component passes-down specific match details to the Progressbar child component.
 
 |       Props       |   Type    |                       Description                       |
@@ -55,11 +55,15 @@ For each single match, the Event component passes-down specific match details to
 |  matchInfo        |   Array   |   list of specific matches selected by option           |
 
 
-## events
+## progressbar
+The ProgressBar is a component which shows a progress bar circle containing the Match timing.
+
+|       Props       |   Type    |   Description    |
+|-------------------|-----------|------------------|
+|  details          |   Object  |   match details  |
 
 
 ## Main Components:
-
 ### App.js
 ```js
 //import logo from './logo.svg';
@@ -87,13 +91,10 @@ class App extends Component{
   }
 }
 export default App;
-
-
 ```
 
 ### content/index.jsx
 ```js
-/* eslint-plugin-disable react */
 import React, { Component } from 'react';
 import { Col, Dropdown } from 'react-bootstrap';
 import Matches from './../events/index';
@@ -380,7 +381,7 @@ MatchCarousel.propTypes = {
 export default MatchCarousel;
 ```
 
-### progressbat/index.jsx
+### progressbar/index.jsx
 ```js
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
